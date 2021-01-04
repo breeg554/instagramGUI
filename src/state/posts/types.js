@@ -1,0 +1,9 @@
+const FETCH_POSTS = "FETCH_POSTS";
+const POSTS_LOADING = "POSTS_LOADING";
+const POSTS_ERROR = "POSTS_ERROR";
+
+export default {
+  FETCH_POSTS,
+  POSTS_LOADING,
+  POSTS_ERROR,
+};
