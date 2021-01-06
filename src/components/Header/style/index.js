@@ -1,15 +1,21 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-export const StyledHeader = styled.header`
-  width: 100%;
+export const HeaderWrapper = styled.div`
   position: fixed;
+  z-index: 99;
   top: 0;
   left: 0;
+  background-color: ${({ theme }) => theme.background.primary};
+  border-bottom: 0.5px solid ${({ theme }) => theme.background.border};
+  width: 100%;
+`;
+export const StyledHeader = styled.header`
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxHeaderWidth};
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${({ theme }) => theme.background.primary};
-  border-bottom: 0.5px solid ${({ theme }) => theme.background.border};
   padding: 0.5em 1em;
 `;
 

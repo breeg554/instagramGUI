@@ -1,4 +1,5 @@
 import actions from "./actions";
+import selectedUserActions from "../selectedUser/actions";
 import { handleErrors, fetchConfig } from "../../utils/utils";
 import history from "../../history";
 
@@ -63,22 +64,71 @@ export const userData = () => async (dispatch, getState) => {
     .catch((err) => {
       console.log(err);
       dispatch(catchAuthError(err));
+      if (err.message === "404") {
+        dispatch(actions.login_error());
+      }
     });
 };
-export const fetchSelectedUser = (name) => async (dispatch, getState) => {
+// export const fetchSelectedUser = (name) => async (dispatch, getState) => {
+//   const token = getState().user.token;
+//   const config = fetchConfig(token);
+//   return await fetch(`${process.env.REACT_APP_API_URL}/user/${name}`, {
+//     method: "GET",
+//     ...config,
+//   })
+//     .then(handleErrors)
+//     .then((res) => {
+//       return res;
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       dispatch(catchAuthError(err));
+//       return 404;
+//     });
+// };
+const postImage = async (data, config) => {
+  return await fetch(`${process.env.REACT_APP_API_URL}/images`, {
+    method: "POST",
+    ...config,
+    body: data,
+  }).then(handleErrors);
+};
+export const addImage = (data, history) => async (dispatch, getState) => {
+  await dispatch(actions.add_image_loading());
   const token = getState().user.token;
   const config = fetchConfig(token);
-  return await fetch(`${process.env.REACT_APP_API_URL}/user/${name}`, {
-    method: "GET",
-    ...config,
-  })
-    .then(handleErrors)
-    .then((res) => {
-      return res;
+  delete config.headers["Content-Type"];
+
+  postImage(data, config)
+    .then(async (res) => {
+      await dispatch(actions.add_image(res));
+      const user = getState().user.user;
+      // dispatch(selectedUserActions.fetch_selected_user(user));
+      history.push(`/user/${user.name}`);
     })
     .catch((err) => {
       console.log(err);
       dispatch(catchAuthError(err));
-      return 404;
+    });
+};
+const deleteImage = async (id, config) => {
+  return await fetch(`${process.env.REACT_APP_API_URL}/images/${id}`, {
+    method: "DELETE",
+    ...config,
+  }).then(handleErrors);
+};
+export const removeImage = (id) => async (dispatch, getState) => {
+  const token = getState().user.token;
+  const config = fetchConfig(token);
+
+  deleteImage(id, config)
+    .then(async () => {
+      await dispatch(actions.remove_image(id));
+      const user = getState().user.user;
+      dispatch(selectedUserActions.fetch_selected_user(user));
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(catchAuthError(err));
     });
 };

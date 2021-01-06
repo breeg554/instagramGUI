@@ -1,4 +1,14 @@
+const bothTheme = {
+  maxBoardWidth: "640px",
+  maxHeaderWidth: "935px",
+  mediaQ: {
+    sm: "@media (min-width: 640px)",
+    md: "@media (min-width: 735px)",
+  },
+};
+
 const lightTheme = {
+  ...bothTheme,
   background: {
     primary: "#fff",
     secondary: "#eee",
@@ -11,6 +21,7 @@ const lightTheme = {
   },
 };
 const darkTheme = {
+  ...bothTheme,
   background: {
     primary: "#121212",
     secondary: "#1e1e1e",

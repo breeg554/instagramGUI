@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
 import { selectedUser } from "../../state/selectedUser/operations";
 import LoadingCircle from "../../components/Loading";
-import { Header, ProfileImgWrapper, StatsWrapper, StatsElement } from "./style";
+import {
+  Header,
+  ProfileImgWrapper,
+  StatsWrapper,
+  StatsElement,
+  NotFound,
+} from "./style";
 import { numFormatter } from "../../utils/utils";
 import Posts from "./components/Posts";
 
@@ -18,34 +24,31 @@ const UserPage = ({
   const history = useHistory();
 
   useEffect(() => {
-    // const { state } = history.location;
+    window.scrollTo(0, 0);
     const nameFromPathname = history.location.pathname.split("/")[2];
 
     fetchSelectedUser(nameFromPathname);
-
     return history.listen(async (location) => {
-      if (!location.pathname.includes("/user/")) return clearData();
+      if (!location.pathname.includes("/user/")) return;
+      window.scrollTo(0, 0);
       const actualNameFromPathname = history.location.pathname.split("/")[2];
-
-      const actualState = history.location.state;
-      console.log(actualState);
-      //   if (
-      //     actualState &&
-      //     actualState.from &&
-      //     actualNameFromPathname === actualState.from.split("/")[2]
-      //   )
-      //     return;
 
       await clearData();
       fetchSelectedUser(actualNameFromPathname);
     });
   }, []);
   if (userLoading) return <LoadingCircle size={25} />;
-  if (userError) return <p>Nie ma takiego użytkownika!</p>;
+  if (userError)
+    return (
+      <NotFound>
+        <p>Nie ma takiego użytkownika!</p>
+        <Link to="/">Wróć na strone główną</Link>
+      </NotFound>
+    );
   if (!user) return <div />;
 
   return (
-    <div>
+    <>
       <Header>
         <ProfileImgWrapper>
           {user.avatar ? (
@@ -58,29 +61,33 @@ const UserPage = ({
           )}
         </ProfileImgWrapper>
         <h1>{user.name}</h1>
+        <StatsWrapper>
+          <StatsElement>
+            Posty:
+            <span>
+              <strong>{user.images.length}</strong>
+            </span>
+          </StatsElement>
+          <StatsElement desc>
+            <button>
+              <strong>{numFormatter(user.followers.length, 0)}</strong>
+            </button>
+            Obserwujacych
+          </StatsElement>
+          <StatsElement>
+            Obserwuje:
+            <button>
+              <strong>{numFormatter(user.followingUsers.length, 2)}</strong>
+            </button>
+          </StatsElement>
+        </StatsWrapper>
       </Header>
-      <StatsWrapper>
-        <StatsElement>
-          Posty:
-          <span>
-            <strong>{user.images.length}</strong>
-          </span>
-        </StatsElement>
-        <StatsElement desc>
-          <button>
-            <strong>{numFormatter(8888, 0)}</strong>
-          </button>
-          Obserwujacych
-        </StatsElement>
-        <StatsElement>
-          Obserwuje:
-          <button>
-            <strong>{numFormatter(user.followingUsers.length, 2)}</strong>
-          </button>
-        </StatsElement>
-      </StatsWrapper>
+
+      {user.images.length <= 0 ? (
+        <p style={{ textAlign: "center" }}>Dodaj swój pierwszy post!</p>
+      ) : null}
       <Posts />
-    </div>
+    </>
   );
 };
 

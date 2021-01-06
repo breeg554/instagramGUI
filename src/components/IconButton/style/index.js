@@ -12,4 +12,7 @@ export const StyledIconBtn = styled(StyledButton)`
     object-fit: cover;
     border-radius: 50%;
   }
+  ${({ theme }) => theme.mediaQ.md} {
+    cursor: pointer;
+  }
 `;

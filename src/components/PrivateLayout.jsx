@@ -9,6 +9,10 @@ import LoadingCircle from "./Loading";
 const Main = styled.main`
   margin-top: ${({ headerHeight }) => `${headerHeight + 5}px`};
   margin-bottom: ${({ headerHeight }) => `${headerHeight + 5}px`};
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxBoardWidth};
 `;
 
 const Layout = ({ children, userLoading, userAuthorized }) => {
@@ -33,7 +37,11 @@ const Layout = ({ children, userLoading, userAuthorized }) => {
         </div>
       ) : (
         <div>
-          <Header headerRef={headerRef} themeToggler={themeToggler} />
+          <Header
+            headerRef={headerRef}
+            themeToggler={themeToggler}
+            theme={theme}
+          />
           <Main headerHeight={headerHeight}>{children}</Main>
         </div>
       )}

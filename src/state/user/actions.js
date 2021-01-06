@@ -20,6 +20,17 @@ const logout_success = () => ({
 const auth_error = () => ({
   type: types.AUTH_ERROR,
 });
+const add_image = (payload) => ({
+  type: types.ADD_IMAGE,
+  payload,
+});
+const add_image_loading = () => ({
+  type: types.ADD_IMAGE_LOADING,
+});
+const remove_image = (payload) => ({
+  type: types.REMOVE_IMAGE,
+  payload,
+});
 export default {
   user_loading,
   user_authorized,
@@ -27,4 +38,7 @@ export default {
   logout_success,
   login_success,
   auth_error,
+  add_image,
+  add_image_loading,
+  remove_image,
 };

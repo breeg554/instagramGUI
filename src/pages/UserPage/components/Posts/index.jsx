@@ -1,15 +1,16 @@
 import { connect } from "react-redux";
 import Post from "../../../../components/Post";
 import { like } from "../../../../state/selectedUser/operations";
+import { PostWrapper } from "../../../HomePage/style";
 const Posts = ({ user, likePost }) => {
   return (
-    <div>
+    <PostWrapper>
       {user.images.map((post) => {
         return (
           <Post key={post.id} data={post} likePost={() => likePost(post.id)} />
         );
       })}
-    </div>
+    </PostWrapper>
   );
 };
 const mapDispatchToProps = (dispatch) => ({

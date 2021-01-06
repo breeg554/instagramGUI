@@ -6,6 +6,7 @@ import { PostWrapper } from "./style";
 import Post from "../../components/Post";
 import { like } from "../../state/posts/operations";
 import LoadingCircle from "../../components/Loading";
+
 const Dekstop = ({
   friendsPosts,
   posts,
@@ -19,26 +20,32 @@ const Dekstop = ({
 }) => {
   useEffect(() => {
     if (hasMore && !postsLoading) friendsPosts(limit, skip);
-    return () => clearPosts();
+    window.scrollTo(0, 0);
   }, []);
 
   if (postsError) return <p>Ups! Cos poszlo nie tak</p>;
   return (
-    <PostWrapper>
-      <InfiniteScroll
-        dataLength={posts.length}
-        next={() => friendsPosts(limit, skip)}
-        hasMore={hasMore}
-        loader={<LoadingCircle size={20} />}
-        endMessage={
-          <p style={{ textAlign: "center" }}>Nie ma więcej postów!</p>
-        }
-      >
-        {posts.map((post) => (
-          <Post key={post.id} data={post} likePost={() => likePost(post.id)} />
-        ))}
-      </InfiniteScroll>
-    </PostWrapper>
+    <>
+      <PostWrapper>
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={() => friendsPosts(limit, skip)}
+          hasMore={hasMore}
+          loader={<LoadingCircle size={20} />}
+          endMessage={
+            <p style={{ textAlign: "center" }}>Nie ma więcej postów!</p>
+          }
+        >
+          {posts.map((post) => (
+            <Post
+              key={post.id}
+              data={post}
+              likePost={() => likePost(post.id)}
+            />
+          ))}
+        </InfiniteScroll>
+      </PostWrapper>
+    </>
   );
 };
 const mapDispatchToProps = (dispatch) => ({

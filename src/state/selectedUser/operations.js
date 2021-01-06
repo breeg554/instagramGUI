@@ -1,4 +1,5 @@
 import actions from "./actions";
+import userActions from "../user/actions";
 import { catchAuthError } from "../user/operations";
 import { handleErrors, fetchConfig } from "../../utils/utils";
 
@@ -10,8 +11,13 @@ const fetchSelectedUser = async (name, config) => {
 };
 export const selectedUser = (name) => async (dispatch, getState) => {
   await dispatch(actions.selected_user_loading());
-  const token = getState().user.token;
+
+  const { user, token } = getState().user;
+  if (user.name.toString() === name.toString())
+    return dispatch(actions.fetch_selected_user(user));
+
   const config = fetchConfig(token);
+
   fetchSelectedUser(name, config)
     .then(async (res) => {
       await dispatch(actions.fetch_selected_user(res));
@@ -38,7 +44,6 @@ export const like = (id) => async (dispatch, getState) => {
       dispatch(actions.toggle_like_user_post(res));
     })
     .catch(async (err) => {
-      console.log(err);
       dispatch(catchAuthError(err));
     });
 };

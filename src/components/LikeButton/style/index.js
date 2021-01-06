@@ -24,4 +24,7 @@ export const LikeButton = styled.button`
   &:focus {
     outline: none;
   }
+  ${({ theme }) => theme.mediaQ.md} {
+    cursor: pointer;
+  }
 `;
