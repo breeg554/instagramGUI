@@ -7,6 +7,7 @@ const lightTheme = {
   text: {
     primary: "#262626",
     secondary: "#666",
+    like: "#ff4646",
   },
 };
 const darkTheme = {
@@ -18,6 +19,7 @@ const darkTheme = {
   text: {
     primary: "#fff",
     secondary: "#eceff1",
+    like: "#ff4646",
   },
 };
 

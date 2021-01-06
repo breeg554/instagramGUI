@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Global } from "./common/GlobalStyles";
+import { Global } from "./components/GlobalStyles";
 import { useLocation } from "react-router-dom";
 import { userData } from "./state/user/operations";
 import Route from "./Route";
@@ -9,7 +9,8 @@ const App = ({ userData, token }) => {
   let location = useLocation();
 
   useEffect(() => {
-    if (location.pathname !== ("/login" || "/register")) userData();
+    if (location.pathname !== "/login" && location.pathname !== "/register")
+      userData();
   }, []);
 
   return (

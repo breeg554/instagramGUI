@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { Link } from "react-router-dom";
 export const StyledHeader = styled.header`
   width: 100%;
   position: fixed;
@@ -27,12 +27,11 @@ export const StyledSubHeader = styled.div`
   align-items: center;
 `;
 
-export const LogoApp = styled.div`
+export const LogoApp = styled(Link)`
   font-family: "Lobster", cursive;
   font-size: 25px;
-  span {
-    color: ${({ theme }) => theme.text.primary};
-  }
+  color: ${({ theme }) => theme.text.primary};
+  text-decoration: none;
 `;
 export const HeaderIconWrapper = styled.div`
   display: flex;

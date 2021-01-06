@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import { StyledLoading } from "./style";
 const LoadingCircle = ({ size }) => {
   return (
-    <StyledLoading size={size}>
-      <AiOutlineLoading3Quarters />
-    </StyledLoading>
+    <div style={{ textAlign: "center" }}>
+      <StyledLoading size={size}>
+        <AiOutlineLoading3Quarters />
+      </StyledLoading>
+    </div>
   );
 };
 

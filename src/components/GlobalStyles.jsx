@@ -8,7 +8,7 @@ export const Global = createGlobalStyle`
 }
 body{
   font-family: 'Roboto', sans-serif;
-  transition: background-color 0.30s linear,color 0.30s linear,border  0.30s linear;
+  transition: background-color 0.30s linear, color 0.30s linear, border 0.30s linear;
 }
 `;
 

@@ -5,36 +5,43 @@ import { GlobalRouteStyles } from "./GlobalStyles";
 import { darkTheme, lightTheme } from "../utils/theme";
 import { useDarkMode } from "./useDarkMode";
 import Header from "./Header";
-
+import LoadingCircle from "./Loading";
 const Main = styled.main`
   margin-top: ${({ headerHeight }) => `${headerHeight + 5}px`};
   margin-bottom: ${({ headerHeight }) => `${headerHeight + 5}px`};
 `;
 
-const Layout = ({ children, user_loading, user_authorized }) => {
+const Layout = ({ children, userLoading, userAuthorized }) => {
   const headerRef = useRef();
   const [headerHeight, setHeaderHeight] = useState(0);
   const [theme, themeToggler] = useDarkMode();
   const themeMode = theme === "light" ? lightTheme : darkTheme;
 
   useEffect(() => {
-    if (user_authorized) {
+    if (userAuthorized) {
       const header = headerRef.current;
       setHeaderHeight(header.offsetHeight);
     }
-  }, [user_authorized]);
+  }, [userAuthorized]);
 
-  if (user_loading) return <div />;
   return (
     <ThemeProvider theme={themeMode}>
       <GlobalRouteStyles />
-      <Header headerRef={headerRef} themeToggler={themeToggler} />
-      <Main headerHeight={headerHeight}>{children}</Main>
+      {userLoading ? (
+        <div style={{ marginTop: "1em" }}>
+          <LoadingCircle size={20} />
+        </div>
+      ) : (
+        <div>
+          <Header headerRef={headerRef} themeToggler={themeToggler} />
+          <Main headerHeight={headerHeight}>{children}</Main>
+        </div>
+      )}
     </ThemeProvider>
   );
 };
 const mapStateToProps = (state) => ({
-  user_authorized: state.user.user_authorized,
-  user_loading: state.user.user_loading,
+  userAuthorized: state.user.userAuthorized,
+  userLoading: state.user.userLoading,
 });
 export default connect(mapStateToProps)(Layout);

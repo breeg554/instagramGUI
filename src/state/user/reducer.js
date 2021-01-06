@@ -2,8 +2,8 @@ import types from "./types";
 import history from "../../history";
 const INITIAL_STATE = {
   token: localStorage.getItem("token") || null,
-  user_loading: true,
-  user_authorized: false,
+  userLoading: true,
+  userAuthorized: false,
   user: {},
 };
 
@@ -12,21 +12,21 @@ const authReducer = (state = INITIAL_STATE, action) => {
     case types.USER_LOADING:
       return {
         ...state,
-        user_loading: true,
+        userLoading: true,
       };
     case types.USER_AUTHORIZED:
       return {
         ...state,
-        user_authorized: true,
-        user_loading: false,
+        userAuthorized: true,
+        userLoading: false,
         user: action.payload,
       };
     case types.LOGIN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
-        user_authorized: true,
-        user_loading: false,
+        userAuthorized: true,
+        userLoading: false,
         token: action.payload.token,
         user: action.payload.user,
       };
@@ -38,8 +38,8 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         token: null,
-        user_authorized: false,
-        user_loading: false,
+        userAuthorized: false,
+        userLoading: false,
         user: {},
       };
     default:

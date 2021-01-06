@@ -4,6 +4,7 @@ export const StyledButton = styled.button`
   border: none;
   background: transparent;
   color: ${({ theme }) => theme.text.primary};
+
   &:focus {
     outline: none;
   }

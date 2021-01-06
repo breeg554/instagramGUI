@@ -1,6 +1,8 @@
 import { connect } from "react-redux";
+import { useLocation } from "react-router-dom";
 import TogglerTheme from "../TogglerTheme";
 import { AiOutlineHeart, AiOutlineUser } from "react-icons/ai";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { FiSend } from "react-icons/fi";
 import {
   StyledHeader,
@@ -8,13 +10,13 @@ import {
   LogoApp,
   HeaderIconWrapper,
 } from "./style";
+import { ProfilLink } from "../Post/style";
 import IconButton from "../IconButton";
 const Header = ({ headerRef, themeToggler, user }) => {
+  const location = useLocation();
   return (
     <StyledHeader ref={headerRef}>
-      <LogoApp>
-        <span>InstaApp</span>
-      </LogoApp>
+      <LogoApp to="/">InstaApp</LogoApp>
       <HeaderIconWrapper>
         <IconButton>
           <AiOutlineHeart />
@@ -26,9 +28,28 @@ const Header = ({ headerRef, themeToggler, user }) => {
       <StyledSubHeader>
         <button>Dom</button>
         <button>wyszuk</button>
-        <button>zdj</button>
+        <button>
+          <IoAddCircleOutline />
+          {/* <input
+            type="file"
+            id="file"
+            name="file"
+            accept="image/png, image/jpeg"
+          /> */}
+        </button>
         <TogglerTheme toggleTheme={themeToggler} />
-        <IconButton size={30}>
+        <ProfilLink
+          to={{
+            pathname: `/user/${user.name}`,
+            state: {
+              from: location.pathname,
+              id: user.id,
+              name: user.name,
+              avatar: user.avatar,
+            },
+          }}
+          size={30}
+        >
           {user.avatar ? (
             <img
               src={`${process.env.REACT_APP_IMAGES_URL}/${user.avatar}`}
@@ -37,7 +58,7 @@ const Header = ({ headerRef, themeToggler, user }) => {
           ) : (
             <AiOutlineUser />
           )}
-        </IconButton>
+        </ProfilLink>
       </StyledSubHeader>
     </StyledHeader>
   );
