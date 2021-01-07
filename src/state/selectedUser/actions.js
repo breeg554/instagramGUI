@@ -18,10 +18,20 @@ const toggle_like_user_post = (payload) => ({
   type: types.TOGGLE_LIKE_USER_POST,
   payload,
 });
+const toggle_follow_user = (payload) => ({
+  type: types.TOGGLE_FOLLOW_USER,
+  payload,
+});
+const push_user = (payload) => ({
+  type: types.PUSH_USER,
+  payload,
+});
 export default {
   selected_user_loading,
   selected_user_error,
   fetch_selected_user,
   user_clear_posts,
   toggle_like_user_post,
+  toggle_follow_user,
+  push_user,
 };

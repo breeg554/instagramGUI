@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   userAuthorized: false,
   user: {},
   addImageLoading: false,
+  followLoading: false,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -63,6 +64,17 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         user: { ...state.user, images: tmpImages },
+      };
+    case types.FOLLOW_LOADING:
+      return {
+        ...state,
+        followLoading: true,
+      };
+    case types.FOLLOW_USER:
+      return {
+        ...state,
+        followLoading: false,
+        user: action.payload,
       };
     default:
       return state;

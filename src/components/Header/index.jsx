@@ -13,7 +13,7 @@ import {
   LogoApp,
   HeaderIconWrapper,
 } from "./style";
-import { ProfilLink } from "../Post/style";
+import ProfilLink from "../ProfilLink";
 import IconButton from "../IconButton";
 import AddImage from "../AddImage";
 const Header = ({ headerRef, user, themeToggler, theme }) => {
@@ -42,27 +42,7 @@ const Header = ({ headerRef, user, themeToggler, theme }) => {
             <IoAddCircleOutline />
           </IconButton>
           <TogglerTheme toggleTheme={themeToggler} theme={theme} />
-          <ProfilLink
-            to={{
-              pathname: `/user/${user.name}`,
-              state: {
-                from: location.pathname,
-                id: user.id,
-                name: user.name,
-                avatar: user.avatar,
-              },
-            }}
-            size={30}
-          >
-            {user.avatar ? (
-              <img
-                src={`${process.env.REACT_APP_IMAGES_URL}/${user.avatar}`}
-                alt="avatar"
-              />
-            ) : (
-              <AiOutlineUser />
-            )}
-          </ProfilLink>
+          <ProfilLink user={user} withName={false} />
         </StyledSubHeader>
       </StyledHeader>
       {isAddImageOpen ? <AddImage close={() => toggleOpen(false)} /> : null}

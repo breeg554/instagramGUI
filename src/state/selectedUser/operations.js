@@ -47,3 +47,23 @@ export const like = (id) => async (dispatch, getState) => {
       dispatch(catchAuthError(err));
     });
 };
+export const getFollowersOrFollowingUsers = (id, type, limit, skip) => async (
+  dispatch,
+  getState
+) => {
+  const token = getState().user.token;
+  const config = fetchConfig(token);
+
+  return await fetch(
+    `${process.env.REACT_APP_API_URL}/user/${type}/${id}?limit=${limit}&skip=${skip}`,
+    {
+      method: "GET",
+      ...config,
+    }
+  )
+    .then(handleErrors)
+    .then((res) => res)
+    .catch(async (err) => {
+      dispatch(catchAuthError(err));
+    });
+};

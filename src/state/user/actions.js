@@ -31,6 +31,13 @@ const remove_image = (payload) => ({
   type: types.REMOVE_IMAGE,
   payload,
 });
+const follow_loading = () => ({
+  type: types.FOLLOW_LOADING,
+});
+const follow_user = (payload) => ({
+  type: types.FOLLOW_USER,
+  payload,
+});
 export default {
   user_loading,
   user_authorized,
@@ -41,4 +48,6 @@ export default {
   add_image,
   add_image_loading,
   remove_image,
+  follow_loading,
+  follow_user,
 };

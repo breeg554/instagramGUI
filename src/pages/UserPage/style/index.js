@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { Link } from "react-router-dom";
 const MOBILE_PROFILE_COLUMN_SIZE = 90;
 const SM_PROFILE_COLUMN_SIZE = 130;
 const MD_PROFILE_COLUMN_SIZE = 160;
@@ -12,14 +12,7 @@ export const Header = styled.header`
     "stats stats";
   padding-top: 1em;
   padding-bottom: 1.5em;
-  h1 {
-    font-weight: 300;
-    font-size: 25px;
-    margin-left: 0.4em;
-    color: ${({ theme }) => theme.text.primary};
-    grid-area: name;
-    align-self: center;
-  }
+
   ${({ theme }) => theme.mediaQ.sm} {
     grid-template-columns: ${SM_PROFILE_COLUMN_SIZE}px 1fr;
     grid-template-areas:
@@ -27,13 +20,30 @@ export const Header = styled.header`
       "img stats";
     margin-bottom: 1em;
     border-bottom: 1px solid ${({ theme }) => theme.background.border};
-    h1 {
-      align-self: end;
-      font-size: 28px;
-    }
   }
   ${({ theme }) => theme.mediaQ.md} {
     grid-template-columns: ${MD_PROFILE_COLUMN_SIZE}px 1fr;
+  }
+`;
+export const HeaderSiteWrapper = styled.div`
+  grid-area: name;
+  margin-left: 0.6em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  h1 {
+    font-weight: 300;
+    font-size: 25px;
+    color: ${({ theme }) => theme.text.primary};
+  }
+  ${({ theme }) => theme.mediaQ.sm} {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    h1 {
+      font-size: 28px;
+    }
   }
 `;
 export const ProfileImgWrapper = styled.div`
@@ -84,29 +94,36 @@ export const StatsWrapper = styled.ul`
 export const StatsElement = styled.li`
   margin: 0 1em;
   font-size: 14px;
-  font-weight: 400;
   color: ${({ theme }) => theme.text.secondary};
+  font-weight: 400;
   text-align: center;
   strong {
     color: ${({ theme }) => theme.text.primary};
     font-weight: 600;
   }
-  span,
-  button {
+  span {
     display: block;
     margin: 0 auto;
   }
   button {
     background-color: transparent;
     border: none;
-    color: ${({ theme }) => theme.text.primary};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    color: ${({ theme }) => theme.text.secondary};
   }
   ${({ theme }) => theme.mediaQ.sm} {
     margin: 0 0.5em 0 0;
+    font-size: 16px;
 
-    &,
     button {
       font-size: 16px;
+      cursor: pointer;
+      &:focus {
+        outline: none;
+      }
     }
     span,
     button {

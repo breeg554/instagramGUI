@@ -5,7 +5,6 @@ import { AiOutlineUser, AiOutlineDelete } from "react-icons/ai";
 import {
   PostArticle,
   PostHeader,
-  ProfilLink,
   PostImg,
   PostWrapper,
   PostSiteWrapper,
@@ -14,6 +13,7 @@ import {
 } from "./style";
 import LikeButton from "../LikeButton";
 import RemoveButton from "../IconButton";
+import ProfilLink from "../ProfilLink";
 const checkIfUserLikePost = (array, userID) => {
   const index = array.findIndex(
     (user) => user._id.toString() === userID.toString()
@@ -26,32 +26,13 @@ const isItUserImg = (userID, creatorID) => {
   return false;
 };
 const Post = ({ removeImage, data, user, likePost }) => {
-  const { id, avatar, name } = data.author;
+  const { name } = data.author;
   const { likes } = data;
 
   return (
     <PostArticle>
       <PostHeader>
-        <ProfilLink
-          to={{
-            pathname: `/user/${name}`,
-            state: {
-              id: id,
-              name: name,
-              avatar: avatar,
-            },
-          }}
-        >
-          {avatar ? (
-            <img
-              src={`${process.env.REACT_APP_IMAGES_URL}/${avatar}`}
-              alt="profile"
-            />
-          ) : (
-            <AiOutlineUser />
-          )}
-          <h3>{name}</h3>
-        </ProfilLink>
+        <ProfilLink user={data.author} />
         {isItUserImg(user.id, data.creatorID) ? (
           <RemoveButton size={20} func={() => removeImage(data.id)}>
             <AiOutlineDelete />

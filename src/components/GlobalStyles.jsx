@@ -7,8 +7,10 @@ export const Global = createGlobalStyle`
   box-sizing: border-box;
 }
 body{
-  font-family: 'Roboto', sans-serif;
   transition: background-color 0.30s linear, color 0.30s linear, border 0.30s linear;
+}
+body,button{
+  font-family: 'Roboto', sans-serif;
 }
 `;
 

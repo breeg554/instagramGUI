@@ -13,6 +13,8 @@ const lightTheme = {
     primary: "#fff",
     secondary: "#eee",
     border: "#ddd",
+    follow: "#0095f6",
+    disabled: "#a6a9b6",
   },
   text: {
     primary: "#262626",
@@ -26,6 +28,8 @@ const darkTheme = {
     primary: "#121212",
     secondary: "#1e1e1e",
     border: "#1e1e1e",
+    follow: "#0095f6",
+    disabled: "#a6a9b6",
   },
   text: {
     primary: "#fff",

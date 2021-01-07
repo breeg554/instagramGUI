@@ -36,3 +36,11 @@ export const numFormatter = (num, digits) => {
   }
   return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
 };
+export const isLoggedUserProfile = (userID, loggedUser) => {
+  return userID.toString() === loggedUser.id.toString();
+};
+export const isUserAlreadyFollow = (userID, loggedUser) => {
+  return (
+    loggedUser.followingUsers.findIndex((user) => user._id === userID) > -1
+  );
+};

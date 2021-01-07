@@ -14,7 +14,12 @@ const Main = styled.main`
   width: 100%;
   max-width: ${({ theme }) => theme.maxBoardWidth};
 `;
-
+const LoadingWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 const Layout = ({ children, userLoading, userAuthorized }) => {
   const headerRef = useRef();
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -32,18 +37,18 @@ const Layout = ({ children, userLoading, userAuthorized }) => {
     <ThemeProvider theme={themeMode}>
       <GlobalRouteStyles />
       {userLoading ? (
-        <div style={{ marginTop: "1em" }}>
+        <LoadingWrapper>
           <LoadingCircle size={20} />
-        </div>
+        </LoadingWrapper>
       ) : (
-        <div>
+        <>
           <Header
             headerRef={headerRef}
             themeToggler={themeToggler}
             theme={theme}
           />
           <Main headerHeight={headerHeight}>{children}</Main>
-        </div>
+        </>
       )}
     </ThemeProvider>
   );

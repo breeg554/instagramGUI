@@ -47,6 +47,22 @@ const selectedUserReducer = (state = INITIAL_STATE, action) => {
         ...state,
         user: tmpUser,
       };
+    case types.TOGGLE_FOLLOW_USER:
+      let tmpFollowers = [...state.user.followers];
+      const i = tmpFollowers.findIndex((user) => user._id === action.payload);
+      if (i > -1)
+        tmpFollowers = tmpFollowers.filter(
+          (user) => user._id !== action.payload
+        );
+      else tmpFollowers.push({ _id: action.payload });
+      return {
+        ...state,
+        user: { ...state.user, followers: tmpFollowers },
+      };
+    case types.PUSH_USER:
+      return {
+        user: action.payload,
+      };
     default:
       return state;
   }

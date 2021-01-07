@@ -31,7 +31,7 @@ const Dekstop = ({
           dataLength={posts.length}
           next={() => friendsPosts(limit, skip)}
           hasMore={hasMore}
-          loader={<LoadingCircle size={20} />}
+          loader={<LoadingCircle />}
           endMessage={
             <p style={{ textAlign: "center" }}>Nie ma więcej postów!</p>
           }

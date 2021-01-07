@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
 import { selectedUser } from "../../state/selectedUser/operations";
 import LoadingCircle from "../../components/Loading";
+import Posts from "./components/Posts";
+import IsUserFollow from "./components/isUserFollow";
+import Stats from "./components/Stats";
+import { isLoggedUserProfile } from "../../utils/utils";
 import {
   Header,
+  HeaderSiteWrapper,
   ProfileImgWrapper,
-  StatsWrapper,
-  StatsElement,
   NotFound,
 } from "./style";
-import { numFormatter } from "../../utils/utils";
-import Posts from "./components/Posts";
 
 const UserPage = ({
   clearData,
@@ -20,6 +21,7 @@ const UserPage = ({
   user,
   userLoading,
   userError,
+  loggedUser,
 }) => {
   const history = useHistory();
 
@@ -37,6 +39,7 @@ const UserPage = ({
       fetchSelectedUser(actualNameFromPathname);
     });
   }, []);
+
   if (userLoading) return <LoadingCircle size={25} />;
   if (userError)
     return (
@@ -60,31 +63,19 @@ const UserPage = ({
             <AiOutlineUser />
           )}
         </ProfileImgWrapper>
-        <h1>{user.name}</h1>
-        <StatsWrapper>
-          <StatsElement>
-            Posty:
-            <span>
-              <strong>{user.images.length}</strong>
-            </span>
-          </StatsElement>
-          <StatsElement desc>
-            <button>
-              <strong>{numFormatter(user.followers.length, 0)}</strong>
-            </button>
-            Obserwujacych
-          </StatsElement>
-          <StatsElement>
-            Obserwuje:
-            <button>
-              <strong>{numFormatter(user.followingUsers.length, 2)}</strong>
-            </button>
-          </StatsElement>
-        </StatsWrapper>
+        <HeaderSiteWrapper>
+          <h1>{user.name}</h1>
+          <IsUserFollow />
+        </HeaderSiteWrapper>
+        <Stats user={user} />
       </Header>
 
       {user.images.length <= 0 ? (
-        <p style={{ textAlign: "center" }}>Dodaj swój pierwszy post!</p>
+        <p style={{ textAlign: "center" }}>
+          {isLoggedUserProfile(user.id, loggedUser)
+            ? "Dodaj swój pierwszy post!"
+            : "Użytkownik nie dodał żadnych postów!"}
+        </p>
       ) : null}
       <Posts />
     </>
@@ -99,5 +90,6 @@ const mapStateToProps = (state) => ({
   user: state.selectedUser.user,
   userLoading: state.selectedUser.userLoading,
   userError: state.selectedUser.userError,
+  loggedUser: state.user.user,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

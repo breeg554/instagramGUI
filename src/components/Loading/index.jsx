@@ -12,6 +12,9 @@ const LoadingCircle = ({ size }) => {
 };
 
 export default LoadingCircle;
+LoadingCircle.defaultProps = {
+  size: 20,
+};
 LoadingCircle.propTypes = {
   size: PropTypes.number.isRequired,
 };

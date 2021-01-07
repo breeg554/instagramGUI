@@ -132,3 +132,32 @@ export const removeImage = (id) => async (dispatch, getState) => {
       dispatch(catchAuthError(err));
     });
 };
+const postFollow = async (userID, config) => {
+  return await fetch(`${process.env.REACT_APP_API_URL}/user/follow`, {
+    method: "POST",
+    ...config,
+    body: JSON.stringify({ userID }),
+  }).then(handleErrors);
+};
+export const toggleFollow = (id) => async (dispatch, getState) => {
+  await dispatch(actions.follow_loading());
+  const token = getState().user.token;
+  const selectedUser = getState().selectedUser.user;
+  const config = fetchConfig(token);
+  return postFollow(id, config)
+    .then(async (res) => {
+      await dispatch(actions.follow_user(res));
+      if (selectedUser.id === id) {
+        await dispatch(selectedUserActions.toggle_follow_user(res.id));
+      } else if (selectedUser.id === res.id) {
+        await dispatch(selectedUserActions.push_user(res));
+      }
+
+      return true;
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(catchAuthError(err));
+      return false;
+    });
+};
