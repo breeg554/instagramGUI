@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
+import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import Modal from "../Modal";
 import { Form } from "./style";
 import { addImage } from "../../state/user/operations";
-const AddImage = ({ addImage, imageLoading, close }) => {
+const AddImage = ({ addImage, imageLoading, closeModal }) => {
   const history = useHistory();
   const imageRef = useRef();
   const [description, setDescription] = useState("");
@@ -19,10 +20,10 @@ const AddImage = ({ addImage, imageLoading, close }) => {
     formData.append("description", description);
     addImage(formData, history);
 
-    close();
+    closeModal();
   };
   return (
-    <Modal closeModal={close}>
+    <Modal closeModal={closeModal}>
       <fieldset disabled={imageLoading}>
         <Form onSubmit={handleAddImage}>
           <input
@@ -54,3 +55,6 @@ const mapStateToProps = (state) => ({
   imageLoading: state.user.addImageLoading,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AddImage);
+AddImage.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+};

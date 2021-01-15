@@ -3,6 +3,7 @@ import { connectRouter } from "connected-react-router";
 import userReducer from "./state/user";
 import selectedUserReducer from "./state/selectedUser";
 import postsReducer from "./state/posts";
+
 const appReducer = (history) =>
   combineReducers({
     router: connectRouter(history),

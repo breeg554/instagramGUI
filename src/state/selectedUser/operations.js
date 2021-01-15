@@ -67,3 +67,24 @@ export const getFollowersOrFollowingUsers = (id, type, limit, skip) => async (
       dispatch(catchAuthError(err));
     });
 };
+export const serachUserByName = (term, limit, signal) => async (
+  dispatch,
+  getState
+) => {
+  const token = getState().user.token;
+  const config = fetchConfig(token);
+
+  return await fetch(
+    `${process.env.REACT_APP_API_URL}/user/accounts/search?term=${term}&limit=${limit}`,
+    {
+      method: "GET",
+      ...config,
+      signal,
+    }
+  )
+    .then(handleErrors)
+    .then((res) => res)
+    .catch(async (err) => {
+      dispatch(catchAuthError(err));
+    });
+};

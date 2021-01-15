@@ -12,7 +12,7 @@ const IsUserFollow = ({ user, loggedUser, toggleFollow }) => {
   return isLoggedUserProfile(user.id, loggedUser) ? null : (
     <MessageWrapper>
       {isUserAlreadyFollow(user.id, loggedUser) ? (
-        <MessageLink to="/">Wyślij wiadomość</MessageLink>
+        <MessageLink to={`/direct/c/${user.id}`}>Wyślij wiadomość</MessageLink>
       ) : null}
       <ToggleFollow
         func={() => toggleFollow(user.id)}

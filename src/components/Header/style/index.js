@@ -19,12 +19,11 @@ export const StyledHeader = styled.header`
   padding: 0.5em 1em;
 `;
 
-export const StyledSubHeader = styled.div`
+export const MobileBottomHeader = styled.div`
   width: 100%;
   position: fixed;
   bottom: 0;
   left: 0;
-  background-color: red;
   background-color: ${({ theme }) => theme.background.primary};
   border-top: 0.5px solid ${({ theme }) => theme.background.border};
   padding: 0.3em 1em;
@@ -42,7 +41,10 @@ export const LogoApp = styled(Link)`
 export const HeaderIconWrapper = styled.div`
   display: flex;
   align-items: center;
-  button {
-    margin-left: 0.5em;
+  ${({ theme }) => theme.mediaQ.sm} {
+    & > button:not(:nth-last-of-type(1)),
+    & > a {
+      margin-right: 0.6em;
+    }
   }
 `;

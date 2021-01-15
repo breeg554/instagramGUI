@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, cloneElement } from "react";
 import { connect } from "react-redux";
 import styled, { ThemeProvider } from "styled-components";
 import { GlobalRouteStyles } from "./GlobalStyles";
@@ -7,8 +7,8 @@ import { useDarkMode } from "./useDarkMode";
 import Header from "./Header";
 import LoadingCircle from "./Loading";
 const Main = styled.main`
-  margin-top: ${({ headerHeight }) => `${headerHeight + 5}px`};
-  margin-bottom: ${({ headerHeight }) => `${headerHeight + 5}px`};
+  margin-top: ${({ headerHeight }) => `${headerHeight}px`};
+  margin-bottom: ${({ headerHeight }) => `${headerHeight}px`};
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -29,7 +29,7 @@ const Layout = ({ children, userLoading, userAuthorized }) => {
   useEffect(() => {
     if (userAuthorized) {
       const header = headerRef.current;
-      setHeaderHeight(header.offsetHeight);
+      setHeaderHeight(header.offsetHeight + 5);
     }
   }, [userAuthorized]);
 
@@ -47,7 +47,10 @@ const Layout = ({ children, userLoading, userAuthorized }) => {
             themeToggler={themeToggler}
             theme={theme}
           />
-          <Main headerHeight={headerHeight}>{children}</Main>
+          <Main headerHeight={headerHeight}>
+            {" "}
+            {cloneElement(children, { headerHeight })}
+          </Main>
         </>
       )}
     </ThemeProvider>

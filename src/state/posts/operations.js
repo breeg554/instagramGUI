@@ -19,7 +19,6 @@ export const friendsPosts = (limit, skip) => async (dispatch, getState) => {
 
   fetchFriendsPosts(limit, skip, config)
     .then((res) => {
-      console.log(res);
       dispatch(actions.fetch_posts(res));
     })
     .catch(async (err) => {

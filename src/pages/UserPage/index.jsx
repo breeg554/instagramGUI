@@ -27,13 +27,20 @@ const UserPage = ({
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const nameFromPathname = history.location.pathname.split("/")[2];
+    const nameFromPathname = history.location.pathname.split("/")[1];
 
     fetchSelectedUser(nameFromPathname);
     return history.listen(async (location) => {
-      if (!location.pathname.includes("/user/")) return;
+      console.log("tu jest blad ");
+      if (
+        location.pathname.toString() === `/` ||
+        location.pathname.toString() === `/login` ||
+        location.pathname.toString() === `/register` ||
+        location.pathname.includes("direct")
+      )
+        return;
       window.scrollTo(0, 0);
-      const actualNameFromPathname = history.location.pathname.split("/")[2];
+      const actualNameFromPathname = history.location.pathname.split("/")[1];
 
       await clearData();
       fetchSelectedUser(actualNameFromPathname);
