@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import io from "socket.io-client";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { catchAuthError } from "../../state/user/operations";
@@ -8,12 +7,14 @@ import { handleErrors, fetchConfig } from "../../utils/utils";
 import history from "../../history";
 import Message from "./components/Message";
 import LoadingCircle from "../../components/Loading";
+import { socket } from "../../utils/socket";
 import {
   ChatWrapper,
   MessagesWrapper,
   SendInputWrapper,
   SendButton,
 } from "./style";
+
 const postMessage = async (data, config) => {
   return await fetch(`${process.env.REACT_APP_API_URL}/user/messages`, {
     method: "POST",
@@ -40,14 +41,9 @@ const ChatPage = ({ user, token, catchAuthError, headerHeight }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [limit, setLimit] = useState(20);
   const [skip, setSkip] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [messageValue, setMessageValue] = useState("");
   const location = useLocation();
-  // let socket = io(`${process.env.REACT_APP_SERVER}/`);
-
-  // socket.on("privateMessage", (data) => {
-  //   console.log(data); // true
-  // });
 
   const handleGetMessages = () => {
     const config = fetchConfig(token);
@@ -56,7 +52,7 @@ const ChatPage = ({ user, token, catchAuthError, headerHeight }) => {
     fetchMessages(idFromPath, limit, skip, config)
       .then((res) => {
         setIsLoading(false);
-        setMessages(res);
+        setMessages([...messages, ...res]);
         setSkip(skip + res.length);
         setHasMore(res.length < limit ? false : true);
         console.log(res);
@@ -80,22 +76,34 @@ const ChatPage = ({ user, token, catchAuthError, headerHeight }) => {
     };
     postMessage(newMessage, config)
       .then((res) => {
-        // dispatch(actions.fetch_posts(res));
-        console.log(res);
+        setMessageValue("");
+        setMessages([res, ...messages]);
       })
       .catch((err) => {
         console.log(err);
       });
   };
   useEffect(() => {
-    // socket.emit("identity", user._id);
-
+    socket.emit("identity", user._id);
     handleGetMessages();
-    // return () => socket.on("disconnect");
   }, []);
-  // useEffect(() => {
-  //   return () => socket.on("disconnect");
-  // }, [socket]);
+  useEffect(() => {
+    socket.on("privateMessage", (message) => {
+      setMessages([message, ...messages]); // true
+    });
+  }, [messages]);
+
+  // const isMessageProfilActive = () => {
+  //   let isActive = true;
+
+  //   return messages.map((message) => {
+  //     isActive = user._id === message.sender._id
+  //     return (
+  //       <Message key={message._id} data={message} loggedUserId={user._id} />
+  //     );
+  //   });
+  // };
+
   const formatView = () => {
     if (isError) return <p>Ups! Cos poszlo nie tak...</p>;
     return (
@@ -103,15 +111,18 @@ const ChatPage = ({ user, token, catchAuthError, headerHeight }) => {
         <div>Gora</div>
         <MessagesWrapper id="scrollableDiv">
           <InfiniteScroll
-            scrollableTarget="scrollableDiv"
             dataLength={messages.length}
             next={() => handleGetMessages()}
             hasMore={hasMore}
             inverse={true}
+            style={{ display: "flex", flexDirection: "column-reverse" }}
             loader={<LoadingCircle />}
             endMessage={
-              <p style={{ textAlign: "center" }}>Nie ma więcej wiadomości!</p>
+              <p style={{ textAlign: "center", fontSize: "12px" }}>
+                Nie ma więcej wiadomości!
+              </p>
             }
+            scrollableTarget="scrollableDiv"
           >
             {messages.map((message) => (
               <Message

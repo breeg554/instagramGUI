@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import { MessageWrapper, StyledMessage } from "./style";
+import { MessageWrapper, StyledMessage, SenderName } from "./style";
 const Message = ({ data, loggedUserId }) => {
+  const isMyMessage = loggedUserId === data.sender._id;
   return (
-    <MessageWrapper>
-      <StyledMessage isMyMessage={loggedUserId === data.sender}>
-        {data.name}
-      </StyledMessage>
+    <MessageWrapper isMyMessage={isMyMessage}>
+      <StyledMessage isMyMessage={isMyMessage}>{data.name}</StyledMessage>
+      {!isMyMessage ? <SenderName>{data.sender.name}</SenderName> : null}
     </MessageWrapper>
   );
 };

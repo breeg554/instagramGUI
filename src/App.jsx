@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Global } from "./components/GlobalStyles";
 import { useLocation } from "react-router-dom";
 import { userData } from "./state/user/operations";
+import { socket } from "./utils/socket";
 import Route from "./Route";
 
 const App = ({ userData, token }) => {
@@ -11,6 +12,8 @@ const App = ({ userData, token }) => {
   useEffect(() => {
     if (location.pathname !== "/login" && location.pathname !== "/register")
       userData();
+
+    return () => socket.disconnect();
   }, []);
 
   return (

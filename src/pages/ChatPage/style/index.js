@@ -13,9 +13,10 @@ export const ChatWrapper = styled.div`
   }
 `;
 export const MessagesWrapper = styled.div`
+  margin: 0.5em 0;
   flex-grow: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   overflow: auto;
 `;
 export const SendInputWrapper = styled.div`
@@ -25,8 +26,10 @@ export const SendInputWrapper = styled.div`
   padding: 0 1em;
   display: flex;
   input {
+    background-color: transparent;
     flex-grow: 1;
     border: none;
+    color: ${({ theme }) => theme.text.primary};
     &:focus {
       outline: none;
     }
