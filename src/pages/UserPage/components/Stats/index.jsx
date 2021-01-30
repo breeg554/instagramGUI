@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StatsWrapper, StatsElement } from "../../style";
 import { numFormatter } from "../../../../utils/utils";
 import FollowersModal from "../../../../components/Followers";
-const Stats = ({ user }) => {
+const Stats = ({ user, posts }) => {
   const [modalData, setModalData] = useState({
     isOpen: false,
     whichOne: "following",
@@ -14,7 +14,7 @@ const Stats = ({ user }) => {
         <StatsElement>
           Posty:
           <span>
-            <strong>{user.images.length}</strong>
+            <strong>{posts.length}</strong>
           </span>
         </StatsElement>
         <StatsElement>

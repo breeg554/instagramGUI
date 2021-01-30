@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Post from "../../components/Post";
+import LoadingCircle from "../../components/Loading";
+import { like } from "../../state/posts/operations";
 import { friendsPosts } from "../../state/posts/operations";
 import { PostWrapper } from "./style";
-import Post from "../../components/Post";
-import { like } from "../../state/posts/operations";
-import LoadingCircle from "../../components/Loading";
 
 const Dekstop = ({
   friendsPosts,
@@ -15,7 +15,6 @@ const Dekstop = ({
   limit,
   skip,
   hasMore,
-  clearPosts,
   likePost,
 }) => {
   useEffect(() => {

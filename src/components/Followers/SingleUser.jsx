@@ -5,10 +5,10 @@ import ProfilLink from "../ProfilLink";
 import { SingleFollower } from "./style";
 import { isUserAlreadyFollow, isLoggedUserProfile } from "../../utils/utils";
 import ToggleFollow from "../ToggleFollow";
-const Follower = ({ data, loggedUser, toggleFollow }) => {
+const Follower = ({ data, loggedUser, toggleFollow, closeModal }) => {
   return (
     <SingleFollower>
-      <ProfilLink user={data} />
+      <ProfilLink closeModal={closeModal} user={data} />
       {isLoggedUserProfile(data.id, loggedUser) ? (
         <p>ty</p>
       ) : (
@@ -30,4 +30,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Follower);
 Follower.propTypes = {
   data: PropTypes.object.isRequired,
+  closeModal: PropTypes.func,
 };

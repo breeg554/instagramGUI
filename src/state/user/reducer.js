@@ -1,11 +1,10 @@
 import types from "./types";
-import history from "../../history";
+
 const INITIAL_STATE = {
   token: localStorage.getItem("token") || null,
   userLoading: true,
   userAuthorized: false,
-  user: {},
-  addImageLoading: false,
+  user: "",
   followLoading: false,
 };
 
@@ -42,29 +41,9 @@ const authReducer = (state = INITIAL_STATE, action) => {
         token: null,
         userAuthorized: false,
         userLoading: false,
-        user: {},
+        user: "",
       };
-    case types.ADD_IMAGE_LOADING:
-      return {
-        ...state,
-        addImageLoading: true,
-      };
-    case types.ADD_IMAGE:
-      const tmpUser = { ...state.user };
-      tmpUser.images = [action.payload, ...tmpUser.images];
-      return {
-        ...state,
-        addImageLoading: false,
-        user: tmpUser,
-      };
-    case types.REMOVE_IMAGE:
-      let tmpImages = [...state.user.images];
-      tmpImages = tmpImages.filter((img) => img.id !== action.payload);
 
-      return {
-        ...state,
-        user: { ...state.user, images: tmpImages },
-      };
     case types.FOLLOW_LOADING:
       return {
         ...state,

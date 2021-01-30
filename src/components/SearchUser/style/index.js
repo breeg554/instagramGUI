@@ -8,4 +8,7 @@ export const SerachForm = styled.form`
   input {
     margin-bottom: 2em;
   }
+  p {
+    font-size: 14px;
+  }
 `;

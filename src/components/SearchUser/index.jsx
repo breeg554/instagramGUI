@@ -1,13 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { serachUserByName } from "../../state/selectedUser/operations";
 import Modal from "../Modal";
 import LoadingCircle from "../Loading";
 import SingleUser from "../Followers/SingleUser";
+import Input from "../Input";
+import { catchAuthError } from "../../state/user/operations";
+import { handleErrors, fetchConfig } from "../../utils/utils";
 import { SerachForm } from "./style";
 import { FollowersWrapper } from "../Followers/style";
-const SearchUser = ({ closeModal, serachUserByName, loggedUser }) => {
+const serachUserByName = async (term, limit, signal, token) => {
+  const config = fetchConfig(token);
+
+  return await fetch(
+    `${process.env.REACT_APP_API_URL}/user/accounts/search?term=${term}&limit=${limit}`,
+    {
+      method: "GET",
+      ...config,
+      signal,
+    }
+  ).then(handleErrors);
+};
+
+const SearchUser = ({ closeModal, token, catchAuthError }) => {
   let controller = null;
 
   const [limit, setLimit] = useState(10);
@@ -28,7 +43,7 @@ const SearchUser = ({ closeModal, serachUserByName, loggedUser }) => {
     controller = new AbortController();
     const signal = controller.signal;
 
-    serachUserByName(value, limit, signal)
+    serachUserByName(value, limit, signal, token)
       .then((res) => {
         controller = null;
         setLoading(false);
@@ -36,7 +51,10 @@ const SearchUser = ({ closeModal, serachUserByName, loggedUser }) => {
 
         setData(res);
       })
-      .catch((err) => setError(true));
+      .catch((err) => {
+        setError(true);
+        catchAuthError(err);
+      });
   };
 
   const formatResult = () => {
@@ -45,14 +63,16 @@ const SearchUser = ({ closeModal, serachUserByName, loggedUser }) => {
     return dataFromApi.length <= 0 ? (
       <p>Nie ma takiej osoby</p>
     ) : (
-      dataFromApi.map((el) => <SingleUser key={el._id} data={el} />)
+      dataFromApi.map((el) => (
+        <SingleUser closeModal={closeModal} key={el._id} data={el} />
+      ))
     );
   };
   return (
     <Modal closeModal={closeModal}>
       <SerachForm autoComplete="off">
-        <input
-          type="text"
+        <Input
+          placeholder="Szukaj..."
           name="search"
           autoComplete="off"
           value={value}
@@ -66,11 +86,10 @@ const SearchUser = ({ closeModal, serachUserByName, loggedUser }) => {
   );
 };
 const mapDispatchToProps = (dispatch) => ({
-  serachUserByName: (term, limit, signal) =>
-    dispatch(serachUserByName(term, limit, signal)),
+  catchAuthError: (err) => dispatch(catchAuthError(err)),
 });
 const mapStateToProps = (state) => ({
-  loggedUser: state.user.user,
+  token: state.user.token,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SearchUser);
 

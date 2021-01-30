@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { ProfilLink } from "./style";
 import { BsFillPersonFill } from "react-icons/bs";
-const Profil = ({ user, withName, size }) => {
+const Profil = ({ user, withName, size, closeModal }) => {
   return (
-    <ProfilLink to={`/${user.name}`} size={size}>
+    <ProfilLink to={`/${user.name}`} size={size} onClick={closeModal}>
       <div>
         {user.avatar ? (
           <img
@@ -28,4 +28,5 @@ Profil.propTypes = {
   user: PropTypes.object.isRequired,
   withName: PropTypes.bool.isRequired,
   size: PropTypes.number.isRequired,
+  closeModal: PropTypes.func,
 };

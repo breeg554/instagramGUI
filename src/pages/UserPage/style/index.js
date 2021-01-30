@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+
 const MOBILE_PROFILE_COLUMN_SIZE = 90;
 const SM_PROFILE_COLUMN_SIZE = 130;
 const MD_PROFILE_COLUMN_SIZE = 160;

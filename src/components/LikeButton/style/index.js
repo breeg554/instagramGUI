@@ -21,9 +21,6 @@ export const LikeButton = styled.button`
   svg:nth-of-type(2) {
     transform: ${({ active }) => (active ? "scale(0)" : "scale(1)")};
   }
-  &:focus {
-    outline: none;
-  }
   ${({ theme }) => theme.mediaQ.md} {
     cursor: pointer;
   }

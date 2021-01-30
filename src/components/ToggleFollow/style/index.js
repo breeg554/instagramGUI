@@ -27,9 +27,6 @@ export const Button = styled.button`
     width: 30px;
     height: 15px;
   }
-  &:focus {
-    outline: none;
-  }
   ${({ theme }) => theme.mediaQ.sm} {
     margin-left: 0.5em;
     cursor: pointer;

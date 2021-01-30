@@ -10,12 +10,19 @@ export const catchAuthError = (err) => async (dispatch, getState) => {
   }
 };
 
-const userLogMethod = async (data, config, method) => {
-  return await fetch(`${process.env.REACT_APP_API_URL}/user/${method}`, {
+const login = async (data, config) => {
+  return await fetch(`${process.env.REACT_APP_API_URL}/user/login`, {
     method: "POST",
     ...config,
     body: JSON.stringify(data),
-  }).then(handleErrors);
+  }).then((res) => res.json());
+};
+const register = async (data, config) => {
+  return await fetch(`${process.env.REACT_APP_API_URL}/user/register`, {
+    method: "POST",
+    ...config,
+    body: JSON.stringify(data),
+  }).then((res) => res.json());
 };
 
 export const userLogin = (data) => async (dispatch, getState) => {
@@ -23,27 +30,22 @@ export const userLogin = (data) => async (dispatch, getState) => {
   const token = getState().user.token;
   const config = fetchConfig(token);
 
-  userLogMethod(data, config, "login")
+  return await login(data, config)
     .then(async (res) => {
+      if (res.error) throw res;
       await dispatch(actions.login_success(res));
       history.push("/");
     })
     .catch((err) => {
-      console.log(err);
       dispatch(actions.login_error());
+      return err;
     });
 };
 export const userRegister = (data) => async (dispatch, getState) => {
   const token = getState().user.token;
   const config = fetchConfig(token);
 
-  userLogMethod(data, config, "register")
-    .then((res) => {
-      history.push("/login");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  return await register(data, config);
 };
 const fetchUserData = async (config) => {
   return await fetch(`${process.env.REACT_APP_API_URL}/user`, {
@@ -58,11 +60,9 @@ export const userData = () => async (dispatch, getState) => {
 
   fetchUserData(config)
     .then(async (res) => {
-      console.log(res);
       dispatch(actions.user_authorized(res));
     })
     .catch((err) => {
-      console.log(err);
       dispatch(catchAuthError(err));
       if (err.message === "404") {
         dispatch(actions.login_error());
@@ -70,52 +70,6 @@ export const userData = () => async (dispatch, getState) => {
     });
 };
 
-const postImage = async (data, config) => {
-  return await fetch(`${process.env.REACT_APP_API_URL}/images`, {
-    method: "POST",
-    ...config,
-    body: data,
-  }).then(handleErrors);
-};
-export const addImage = (data, history) => async (dispatch, getState) => {
-  await dispatch(actions.add_image_loading());
-  const token = getState().user.token;
-  const config = fetchConfig(token);
-  delete config.headers["Content-Type"];
-
-  postImage(data, config)
-    .then(async (res) => {
-      await dispatch(actions.add_image(res));
-      const user = getState().user.user;
-      // dispatch(selectedUserActions.fetch_selected_user(user));
-      history.push(`/user/${user.name}`);
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch(catchAuthError(err));
-    });
-};
-const deleteImage = async (id, config) => {
-  return await fetch(`${process.env.REACT_APP_API_URL}/images/${id}`, {
-    method: "DELETE",
-    ...config,
-  }).then(handleErrors);
-};
-export const removeImage = (id) => async (dispatch, getState) => {
-  const token = getState().user.token;
-  const config = fetchConfig(token);
-
-  deleteImage(id, config)
-    .then(async () => {
-      await dispatch(actions.remove_image(id));
-      const user = getState().user.user;
-      dispatch(selectedUserActions.fetch_selected_user(user));
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch(catchAuthError(err));
-    });
-};
 const postFollow = async (userID, config) => {
   return await fetch(`${process.env.REACT_APP_API_URL}/user/follow`, {
     method: "POST",
@@ -142,7 +96,6 @@ export const toggleFollow = (id) => async (dispatch, getState) => {
       return true;
     })
     .catch((err) => {
-      console.log(err);
       dispatch(catchAuthError(err));
       return false;
     });

@@ -1,7 +1,10 @@
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { removeImage } from "../../state/user/operations";
-import { AiOutlineUser, AiOutlineDelete } from "react-icons/ai";
+import { removeImage } from "../../state/selectedUser/operations";
+import { AiOutlineDelete } from "react-icons/ai";
+import LikeButton from "../LikeButton";
+import RemoveButton from "../IconButton";
+import ProfilLink from "../ProfilLink";
 import {
   PostArticle,
   PostHeader,
@@ -11,9 +14,7 @@ import {
   PostDescription,
   Likes,
 } from "./style";
-import LikeButton from "../LikeButton";
-import RemoveButton from "../IconButton";
-import ProfilLink from "../ProfilLink";
+
 const checkIfUserLikePost = (array, userID) => {
   const index = array.findIndex(
     (user) => user._id.toString() === userID.toString()

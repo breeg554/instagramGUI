@@ -31,15 +31,7 @@ const postsReducer = (state = INITIAL_STATE, action) => {
         postsLoading: false,
       };
     case types.CLEAR_POSTS:
-      return {
-        ...state,
-        posts: [],
-        postsLoading: false,
-        postsError: false,
-        limit: 5,
-        skip: 0,
-        hasMore: true,
-      };
+      return INITIAL_STATE;
     case types.TOGGLE_LIKE_POST:
       const tmpPosts = [...state.posts];
       const index = tmpPosts.findIndex(

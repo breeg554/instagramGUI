@@ -23,7 +23,7 @@ export const Button = styled.button`
   svg:nth-of-type(2) {
     top: ${({ themeMode }) => (themeMode === "dark" ? "50%" : "-50%")};
   }
-  &:focus {
-    outline: none;
+  ${({ theme }) => theme.mediaQ.sm} {
+    cursor: pointer;
   }
 `;

@@ -36,7 +36,6 @@ export const like = (id) => async (dispatch, getState) => {
       dispatch(actions.toggle_like_post(res));
     })
     .catch(async (err) => {
-      console.log(err);
       dispatch(catchAuthError(err));
     });
 };

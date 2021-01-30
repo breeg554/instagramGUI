@@ -2,12 +2,32 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getFollowersOrFollowingUsers } from "../../state/selectedUser/operations";
-import { FollowersWrapper } from "./style";
 import Modal from "../Modal";
 import LoadingCircle from "../Loading";
 import Follower from "./SingleUser";
-const Followers = ({ closeModal, whichOne, getDataFromApi, selectedUser }) => {
+import { FollowersWrapper } from "./style";
+import { catchAuthError } from "../../state/user/operations";
+import { handleErrors, fetchConfig } from "../../utils/utils";
+
+const getFollowersOrFollowingUsers = async (id, type, limit, skip, token) => {
+  const config = fetchConfig(token);
+
+  return await fetch(
+    `${process.env.REACT_APP_API_URL}/user/${type}/${id}?limit=${limit}&skip=${skip}`,
+    {
+      method: "GET",
+      ...config,
+    }
+  ).then(handleErrors);
+};
+
+const Followers = ({
+  closeModal,
+  whichOne,
+  selectedUser,
+  catchAuthError,
+  token,
+}) => {
   const [dataFromApi, setData] = useState([]);
   const [isError, setError] = useState(false);
   const [limit, setLimit] = useState(20);
@@ -15,16 +35,21 @@ const Followers = ({ closeModal, whichOne, getDataFromApi, selectedUser }) => {
   const [hasMore, setHasMore] = useState(true);
 
   const handleGetData = () => {
-    getDataFromApi(selectedUser.id, whichOne, limit, skip).then((res) => {
-      if (!res) {
-        setError(true);
-        return setHasMore(false);
-      }
+    getFollowersOrFollowingUsers(selectedUser.id, whichOne, limit, skip, token)
+      .then((res) => {
+        if (!res) {
+          setError(true);
+          return setHasMore(false);
+        }
 
-      setData([...dataFromApi, ...res]);
-      if (res.length < limit) return setHasMore(false);
-      setSkip(skip + limit);
-    });
+        setData([...dataFromApi, ...res]);
+        if (res.length < limit) return setHasMore(false);
+        setSkip(skip + limit);
+      })
+      .catch((err) => {
+        setError(true);
+        catchAuthError(err);
+      });
   };
   useEffect(() => {
     handleGetData();
@@ -61,11 +86,11 @@ const Followers = ({ closeModal, whichOne, getDataFromApi, selectedUser }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getDataFromApi: (id, type, limit, skip) =>
-    dispatch(getFollowersOrFollowingUsers(id, type, limit, skip)),
+  catchAuthError: (err) => dispatch(catchAuthError(err)),
 });
 const mapStateToProps = (state) => ({
   selectedUser: state.selectedUser.user,
+  token: state.user.token,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Followers);
 Followers.propTypes = {

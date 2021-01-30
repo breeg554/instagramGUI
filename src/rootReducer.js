@@ -12,7 +12,7 @@ const appReducer = (history) =>
     posts: postsReducer,
   });
 const rootReducer = (history) => (state, action) => {
-  if (action.type === "AUTH_ERROR") {
+  if (action.type === "LOGOUT_SUCCESS" || action.type === "AUTH_ERROR") {
     state = undefined;
   }
   return appReducer(history)(state, action);

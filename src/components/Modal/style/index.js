@@ -1,4 +1,4 @@
-import styled, { ThemeContext } from "styled-components";
+import styled from "styled-components";
 
 export const StyledModal = styled.div`
   position: fixed;
@@ -35,4 +35,7 @@ export const CloseButton = styled.button`
   border: none;
   font-size: 25px;
   color: ${({ theme }) => theme.text.primary};
+  ${({ theme }) => theme.mediaQ.sm} {
+    cursor: pointer;
+  }
 `;

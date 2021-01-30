@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import TogglerTheme from "../ToggleTheme";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineLogout } from "react-icons/ai";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { HiHome, HiOutlineSearch } from "react-icons/hi";
 import { FiSend } from "react-icons/fi";
@@ -18,7 +18,7 @@ import {
   LogoApp,
   HeaderIconWrapper,
 } from "./style";
-const Header = ({ headerRef, user, themeToggler, theme }) => {
+const Header = ({ headerRef, user, themeToggler, theme, logOut }) => {
   const [windowWidth, setWidth] = useState(0);
   const [isAddImageOpen, toggleAddImage] = useState(false);
   const [isSearchUserOpen, toggleSearchUser] = useState(false);
@@ -52,18 +52,19 @@ const Header = ({ headerRef, user, themeToggler, theme }) => {
               </IconButton>
             </>
           ) : null}
-          <IconButton>
+          {/* <IconButton>
             <AiOutlineHeart />
-          </IconButton>
-          <IconButton>
-            <FiSend />
-          </IconButton>
+          </IconButton> */}
+
           {!isMobile ? (
             <>
               <ProfilLink size={30} user={user} withName={false} />
               <TogglerTheme toggleTheme={themeToggler} theme={theme} />
             </>
           ) : null}
+          <IconButton func={logOut}>
+            <AiOutlineLogout />
+          </IconButton>
         </HeaderIconWrapper>
       </StyledHeader>
 
@@ -93,7 +94,10 @@ const Header = ({ headerRef, user, themeToggler, theme }) => {
     </HeaderWrapper>
   );
 };
+const mapDispatchToProps = (dispatch) => ({
+  logOut: () => dispatch({ type: "LOGOUT_SUCCESS" }),
+});
 const mapStateToProps = (state) => ({
   user: state.user.user,
 });
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
