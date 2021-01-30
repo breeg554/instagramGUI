@@ -5,6 +5,7 @@ import Home from "../pages/HomePage";
 import Chat from "../pages/ChatPage";
 import Login from "../pages/LoginPage";
 import Register from "../pages/RegisterPage";
+import Error from "../pages/404";
 import PrivateRoute from "./PrivateRoute";
 import PublicLayout from "../components/PublicLayout";
 
@@ -24,6 +25,7 @@ const Router = () => {
       <PrivateRoute exact path="/" component={Home} />
       <PrivateRoute exact path="/direct/c/:chatID" component={Chat} />
       <PrivateRoute exact path="/:userID" component={UserPage} />
+      <PrivateRoute component={Error} />
     </Switch>
   );
 };
