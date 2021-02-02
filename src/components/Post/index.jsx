@@ -40,10 +40,7 @@ const Post = ({ removeImage, data, user, likePost }) => {
           </RemoveButton>
         ) : null}
       </PostHeader>
-      <PostImg
-        src={`${process.env.REACT_APP_IMAGES_URL}/${data.path}`}
-        alt="post"
-      />
+      <PostImg src={`${data.path}`} alt="post" />
       <PostWrapper>
         <PostSiteWrapper>
           <LikeButton

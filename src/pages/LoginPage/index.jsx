@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { userLogin } from "../../state/user/operations";
 import Input from "../../components/Input";
 import Button from "../../components/LoginButton";
+import { SuccessMessage } from "./style";
 import {
   Logo,
   Wrapper,
@@ -22,6 +23,8 @@ const displayError = (err) => {
 };
 
 const Login = ({ userLogin }) => {
+  const history = useHistory();
+
   const formRef = useRef();
 
   const [loading, setLoading] = useState(false);
@@ -39,6 +42,21 @@ const Login = ({ userLogin }) => {
         setError(res.error);
       }
     });
+  };
+  const displayRegisterSuccess = () => {
+    if (
+      history.location.state &&
+      history.location.state.successLogin &&
+      history.action === "PUSH"
+    ) {
+      return (
+        <SuccessMessage>
+          Rejestracja pomyślna, możesz się zalogować!
+        </SuccessMessage>
+      );
+    }
+
+    return null;
   };
   return (
     <Wrapper>
@@ -70,10 +88,12 @@ const Login = ({ userLogin }) => {
           </Button>
         </Form>
       </SideWrapper>
+
       <BottomWrapper>
         <p>Nie masz konta?</p>
         <Link to="/register">Zarejestruj się</Link>
       </BottomWrapper>
+      {displayRegisterSuccess()}
     </Wrapper>
   );
 };

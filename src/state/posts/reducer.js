@@ -1,5 +1,5 @@
 import types from "./types";
-import history from "../../history";
+
 const INITIAL_STATE = {
   posts: [],
   postsLoading: false,

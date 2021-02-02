@@ -3,7 +3,7 @@ import { StyledButton } from "./style";
 import LoadingCircle from "../Loading";
 const Button = ({ children, active, isLoading }) => {
   return (
-    <StyledButton disabled={!active}>
+    <StyledButton disabled={!active || isLoading}>
       {isLoading ? <LoadingCircle size={15} /> : children}
     </StyledButton>
   );

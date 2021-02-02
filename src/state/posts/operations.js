@@ -12,9 +12,12 @@ const fetchFriendsPosts = async (limit = 0, skip = 0, config) => {
     }
   ).then(handleErrors);
 };
-export const friendsPosts = (limit, skip) => async (dispatch, getState) => {
+export const friendsPosts = () => async (dispatch, getState) => {
+  const { limit, skip, postsLoading } = getState().posts;
+  if (postsLoading) return;
   await dispatch(actions.posts_loading());
   const token = getState().user.token;
+
   const config = fetchConfig(token);
 
   fetchFriendsPosts(limit, skip, config)

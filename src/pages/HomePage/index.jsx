@@ -12,13 +12,11 @@ const Dekstop = ({
   posts,
   postsError,
   postsLoading,
-  limit,
-  skip,
   hasMore,
   likePost,
 }) => {
   useEffect(() => {
-    if (hasMore && !postsLoading) friendsPosts(limit, skip);
+    if (hasMore) friendsPosts();
     window.scrollTo(0, 0);
   }, []);
 
@@ -28,7 +26,7 @@ const Dekstop = ({
       <PostWrapper>
         <InfiniteScroll
           dataLength={posts.length}
-          next={() => friendsPosts(limit, skip)}
+          next={() => friendsPosts()}
           hasMore={hasMore}
           loader={<LoadingCircle />}
           endMessage={
@@ -56,8 +54,6 @@ const mapStateToProps = (state) => ({
   posts: state.posts.posts,
   postsError: state.posts.postsError,
   postsLoading: state.posts.postsLoading,
-  limit: state.posts.limit,
-  skip: state.posts.skip,
   hasMore: state.posts.hasMore,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Dekstop);

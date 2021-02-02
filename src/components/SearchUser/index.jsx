@@ -32,6 +32,7 @@ const SearchUser = ({ closeModal, token, catchAuthError }) => {
   const [dataFromApi, setData] = useState([]);
 
   const fetchFromApi = async (e) => {
+    e.preventDefault();
     const { value } = e.target;
     setValue(value);
 
@@ -70,7 +71,7 @@ const SearchUser = ({ closeModal, token, catchAuthError }) => {
   };
   return (
     <Modal closeModal={closeModal}>
-      <SerachForm autoComplete="off">
+      <SerachForm autoComplete="off" onSubmit={(e) => e.preventDefault()}>
         <Input
           placeholder="Szukaj..."
           name="search"

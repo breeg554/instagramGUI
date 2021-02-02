@@ -41,9 +41,11 @@ const fetchPosts = async (limit = 0, skip = 0, id, config) => {
   ).then(handleErrors);
 };
 export const selectedUserPosts = (id) => async (dispatch, getState) => {
+  const { limit, skip, postsLoading } = getState().selectedUser;
+  if (postsLoading) return;
   await dispatch(actions.posts_loading());
   const token = getState().user.token;
-  const { limit, skip } = getState().selectedUser;
+
   const config = fetchConfig(token);
 
   fetchPosts(limit, skip, id, config)
@@ -63,19 +65,21 @@ const postImage = async (data, config) => {
   }).then(handleErrors);
 };
 export const addImage = (data, history) => async (dispatch, getState) => {
-  await dispatch(actions.add_image_loading());
+  await dispatch(actions.add_image_loading(true));
   const token = getState().user.token;
   const config = fetchConfig(token);
   delete config.headers["Content-Type"];
 
-  postImage(data, config)
+  return await postImage(data, config)
     .then(async (res) => {
       await dispatch(actions.add_image(res));
       const user = getState().user.user;
       history.push(`/${user.name}`);
     })
-    .catch((err) => {
+    .catch(async (err) => {
+      await dispatch(actions.add_image_loading(false));
       dispatch(catchAuthError(err));
+      return err;
     });
 };
 const deleteImage = async (id, config) => {

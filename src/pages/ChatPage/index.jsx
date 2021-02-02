@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -43,7 +43,6 @@ const fetchUser = async (id, config) => {
 };
 const ChatPage = ({ user, token, catchAuthError, headerHeight }) => {
   let controller = null;
-  const scrollableRef = useRef();
   //headerHeight props from privateRoute
   const [friend, setFriend] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -108,7 +107,6 @@ const ChatPage = ({ user, token, catchAuthError, headerHeight }) => {
       .then((res) => {
         setMessageValue("");
         setMessages([res, ...messages]);
-        scrollableRef.scrollIntoView({ alignToTop: false, block: "end" });
       })
       .catch((err) => {
         console.log(err);
@@ -159,7 +157,6 @@ const ChatPage = ({ user, token, catchAuthError, headerHeight }) => {
               />
             ))}
           </InfiniteScroll>
-          <div ref={scrollableRef} />
         </MessagesWrapper>
         <SendInputWrapper onSubmit={handleAddMessage}>
           <input

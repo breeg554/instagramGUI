@@ -12,13 +12,9 @@ export const Form = styled.form`
   }
   input {
     margin-bottom: 0.5em;
+    width: 100%;
   }
   button {
-    padding: 0.5em 1em;
-    color: ${({ theme }) => theme.text.primary};
-    background-color: transparent;
-    border: 1px solid ${({ theme }) => theme.background.border};
-    cursor: pointer;
-    border-radius: 3px;
+    width: 100%;
   }
 `;

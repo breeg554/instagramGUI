@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   userError: false,
   addImageLoading: false,
   posts: [],
-  postsLoading: true,
+  postsLoading: false,
   postsError: false,
   limit: 5,
   skip: 0,
@@ -88,7 +88,7 @@ const selectedUserReducer = (state = INITIAL_STATE, action) => {
     case types.ADD_IMAGE_LOADING:
       return {
         ...state,
-        addImageLoading: true,
+        addImageLoading: action.payload,
       };
     case types.ADD_IMAGE:
       let posts = [...state.posts];

@@ -26,7 +26,7 @@ const UserPage = ({
   useEffect(() => {
     window.scrollTo(0, 0);
     const nameFromPathname = router.location.pathname.split("/")[1];
-
+    if (router.location.pathname === "/") return;
     fetchSelectedUser(nameFromPathname);
   }, [router.location]);
 

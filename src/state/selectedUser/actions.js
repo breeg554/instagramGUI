@@ -40,8 +40,9 @@ const add_image = (payload) => ({
   type: types.ADD_IMAGE,
   payload,
 });
-const add_image_loading = () => ({
+const add_image_loading = (payload) => ({
   type: types.ADD_IMAGE_LOADING,
+  payload,
 });
 const remove_image = (payload) => ({
   type: types.REMOVE_IMAGE,
