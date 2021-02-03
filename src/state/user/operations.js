@@ -63,7 +63,6 @@ export const userData = () => async (dispatch, getState) => {
       dispatch(actions.user_authorized(res));
     })
     .catch((err) => {
-      console.log(err);
       dispatch(catchAuthError(err));
       if (err.message === "404") {
         dispatch(actions.login_error());
