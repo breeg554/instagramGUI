@@ -9,11 +9,11 @@ The app is an instagram clone. It was created for training purposes and getting 
 https://github.com/breeg554/instagramAPI
 
 ## Live
-https://store-react-mobile.netlify.app/
+https://frosty-swartz-c5e07d.netlify.app/
 
 *login details for a sample account* 
-*email: **konto@gmail.com** *
-*password: **12345** *
+- email: **konto@gmail.com** 
+- password: **12345** 
 
 ## Tech info
 - App written in **React.js**
