@@ -37,10 +37,12 @@ const Login = ({ userLogin }) => {
   };
   const handleLogin = (e) => {
     e.preventDefault();
+    setLoading(true);
     userLogin(loginData).then((res) => {
       if (res && res.error) {
         setError(res.error);
       }
+      setLoading(false);
     });
   };
   const displayRegisterSuccess = () => {
